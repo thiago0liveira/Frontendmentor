@@ -1,20 +1,63 @@
-import { Fragment,Component } from 'react'
+import { Fragment } from 'react'
+import { useLocation } from "react-router-dom"
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
+
 const navigation = [
-  { name: 'Newbie', href: '#', current: true },
-  { name: 'Junior', href: '#', current: false },
-  { name: 'Intermediated', href: '#', current: false },
-  { name: 'Advanced', href: '#', current: false }
+  { name: 'Newbie',         href: '#/Newbie' },
+  { name: 'Junior',         href: '#/Junior'},
+  { name: 'Intermediated',  href: '#/Intermediated'},
+  { name: 'Advanced',       href: '#/Advanced'}
 ]
+
+const useCurrentPath = () => {
+  const location = useLocation();
+  return "#"+location.pathname;
+};
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default class Navbar extends Component {
-    render() {
+const DisclosureButton = ({ name, href }) => {
+  const currentPath = useCurrentPath();
+  const current = currentPath === href;
+  return (
+    <Disclosure.Button
+    key={name}
+    as="a"
+    href={href}
+    className={classNames(
+      current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+      'block rounded-md px-3 py-2 text-base font-medium'
+    )}
+    aria-current={current ? 'page' : undefined}
+  >
+    {name}
+  </Disclosure.Button>
+  );
+};
+
+const NavigationItem = ({ name, href }) => {
+  const currentPath = useCurrentPath();
+  const current = currentPath === href;
+  return (
+    <a
+    key={name}
+    href={href}
+    className={classNames(
+      current ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+      'rounded-md px-3 py-2 text-sm font-medium'
+    )}
+    aria-current={current ? 'page' : undefined}
+  >
+    {name}
+  </a>
+  );
+};
+
+const Navbar = () => {
       return (
     <Disclosure as="nav" className="bg-gray-700">
       {({ open }) => (
@@ -48,17 +91,7 @@ export default class Navbar extends Component {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          item.current ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                          'rounded-md px-3 py-2 text-sm font-medium'
-                        )}
-                        aria-current={item.current ? 'page' : undefined}
-                      >
-                        {item.name}
-                      </a>
+                      <NavigationItem key={item.href} name={item.name} href={item.href} />
                     ))}
                   </div>
                 </div>
@@ -116,18 +149,7 @@ export default class Navbar extends Component {
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
               {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block rounded-md px-3 py-2 text-base font-medium'
-                  )}
-                  aria-current={item.current ? 'page' : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
+                <DisclosureButton key={item.href} name={item.name} href={item.href} />
               ))}
             </div>
           </Disclosure.Panel>
@@ -136,4 +158,5 @@ export default class Navbar extends Component {
     </Disclosure>
     )
 }
-}
+
+export default Navbar;

@@ -4,15 +4,17 @@ import {
   Routes,
   Route
 } from 'react-router-dom'
-import Newbie from "./pages/Newbie/Newbie"
+import Pages from "./pages/Pages"
+import Sunnyside from "./pages/Junior/Sunnyside/Sunnyside"
 
 function App() {
 
   return (
     <div>
       <Routes>
-        <Route exact path="/" element={<Newbie />} />
+        <Route exact path="/*"  element={<Pages />} />
         <Route exact path="/Newbie/QrCode" element={<QrCode />} />
+        <Route exact path="/Junior/Sunnyside" element={<Sunnyside />} />
       </Routes>
     </div>
   )

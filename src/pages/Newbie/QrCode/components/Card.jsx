@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import qrImage from '../../../../assets/image-qr-code.png';
+import qrImage from '../../../../assets/qr-code/image-qr-code.png';
 
 export default class Card extends Component {
   render() {
